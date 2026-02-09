@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build') {
+            steps {
+                echo "Building the project"
+                bat 'mvn clean'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Executing the Test scripts"
+                bat 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying the code into QA Environment"
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Generating Allure Report"
+            allure([
+                includeProperties: false,
+                jdk: '',
+                results: [[path: 'allure-results']]
+            ])
+        }
+    }
+}
