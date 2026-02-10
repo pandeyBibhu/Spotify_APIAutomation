@@ -20,23 +20,27 @@ pipeline {
             }
         }
 
+        stage('Clean Allure Results') {
+            steps {
+                bat '''
+                if exist target\\allure-results (
+                    rmdir /s /q target\\allure-results
+                )
+                '''
+            }
+        }
+
         stage('Build') {
             steps {
                 echo "Building the project"
-                bat 'mvn clean install'
+                bat 'mvn clean compile'
             }
         }
-        stage('Clean Allure') {
-          steps {
-        bat 'if exist target\\allure-results rmdir /s /q target\\allure-results'
-       }
-      }
-
 
         stage('Test') {
             steps {
-                echo "Executing the Test scripts"
-                bat 'mvn clean test'
+                echo "Executing Test Scripts"
+                bat 'mvn test'
             }
         }
 
@@ -48,13 +52,51 @@ pipeline {
     }
 
     post {
-        success  {
-            echo "Generating Allure Report"
+
+        always {
+            echo "Publishing Allure Report"
             allure([
                 includeProperties: false,
                 jdk: '',
                 results: [[path: 'target/allure-results']]
             ])
+        }
+
+        success {
+            emailext(
+                subject: "✅ BUILD SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                Build Status: SUCCESS
+
+                Job: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+
+                Allure Report:
+                ${env.BUILD_URL}allure/
+
+                Console Log:
+                ${env.BUILD_URL}console
+                """,
+                to: "pandeybibhu89@outlook.com"
+            )
+        }
+
+        failure {
+            emailext(
+                subject: "❌ BUILD FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """
+                Build Status: FAILED
+
+                Job: ${env.JOB_NAME}
+                Build Number: ${env.BUILD_NUMBER}
+
+                Allure Report (partial):
+                ${env.BUILD_URL}allure/
+
+                Please check logs.
+                """,
+                to: "pandeybibhu89@outlook.com"
+            )
         }
     }
 }
