@@ -23,14 +23,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building the project"
-                bat 'mvn clean'
+                bat 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
                 echo "Executing the Test scripts"
-                bat 'mvn test'
+                bat 'mvn clean test'
             }
         }
 
@@ -47,7 +47,7 @@ pipeline {
             allure([
                 includeProperties: false,
                 jdk: '',
-                results: [[path: 'allure-results']]
+                results: [[path: 'target/allure-results']]
             ])
         }
     }
