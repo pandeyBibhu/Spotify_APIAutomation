@@ -42,7 +42,7 @@ pipeline {
     }
 
     post {
-        always {
+        success  {
             echo "Generating Allure Report"
             allure([
                 includeProperties: false,
