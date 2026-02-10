@@ -26,6 +26,12 @@ pipeline {
                 bat 'mvn clean install'
             }
         }
+        stage('Clean Allure') {
+          steps {
+        bat 'if exist target\\allure-results rmdir /s /q target\\allure-results'
+       }
+      }
+
 
         stage('Test') {
             steps {
