@@ -64,19 +64,12 @@ pipeline {
 
         success {
             emailext(
-    from: 'pandeybibhu89@outlook.com',
-    to: 'pandeybibhu006@gmail.com',
-    subject: "✅ BUILD SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-    body: """
-    Build Status: SUCCESS
+    			from: 'pandeybibhu006@gmail.com',
+    			to: 'pandeybibhu006@gmail.com',
+    			subject: 'Jenkins Gmail SMTP Test',
+    			body: 'This is a test email from Jenkins using Gmail SMTP.'
+				)
 
-    Job: ${env.JOB_NAME}
-    Build: ${env.BUILD_NUMBER}
-
-    Allure Report:
-    ${env.BUILD_URL}allure/
-    """
-)
         }
 
         failure {
@@ -93,7 +86,7 @@ pipeline {
 
                 Please check logs.
                 """,
-                to: "pandeybibhu89@outlook.com"
+                to: "pandeybibhu006@gmail.com"
             )
         }
     }
