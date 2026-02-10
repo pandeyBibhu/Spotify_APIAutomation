@@ -64,21 +64,19 @@ pipeline {
 
         success {
             emailext(
-                subject: "✅ BUILD SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
-                Build Status: SUCCESS
+    from: 'pandeybibhu89@outlook.com',
+    to: 'pandeybibhu89@outlook.com',
+    subject: "✅ BUILD SUCCESS: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+    body: """
+    Build Status: SUCCESS
 
-                Job: ${env.JOB_NAME}
-                Build Number: ${env.BUILD_NUMBER}
+    Job: ${env.JOB_NAME}
+    Build Number: ${env.BUILD_NUMBER}
 
-                Allure Report:
-                ${env.BUILD_URL}allure/
-
-                Console Log:
-                ${env.BUILD_URL}console
-                """,
-                to: "pandeybibhu89@outlook.com"
-            )
+    Allure Report:
+    ${env.BUILD_URL}allure/
+    """
+)
         }
 
         failure {
