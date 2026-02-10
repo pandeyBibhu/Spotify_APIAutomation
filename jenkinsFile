@@ -71,7 +71,7 @@ pipeline {
     Build Status: SUCCESS
 
     Job: ${env.JOB_NAME}
-    Build Number: ${env.BUILD_NUMBER}
+    Build: ${env.BUILD_NUMBER}
 
     Allure Report:
     ${env.BUILD_URL}allure/
